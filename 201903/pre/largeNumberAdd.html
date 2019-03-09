@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>大整数相加</title>
+</head>
+<body>
+<script type="text/javascript">
+    function handler(s1,s2){
+        if(s1==0) return s2
+        if(s2==0) return s1
+//        let maxStr=[],minStr=[]
+//        if(s1.toString().length>s2.toString().length){
+//            maxStr=s1.toString().split('')
+//            minStr=s2.toString().split('')
+//        }else{
+//            maxStr=s2.toString().split()
+//            minStr=s1.toString().split()
+//        }
+        let s1Str=(s1+'').split(''),s2Str=(s2+'').split('')
+        let minLength=s1Str.length>s2Str.length?s2Str.length:s1Str.length
+        let maxLength=s1Str.length>s2Str.length?s1Str.length:s2Str.length
+        let result=[]
+        for(let i=1;i<=maxLength;i++){
+            let param=0
+            if(i<=s1Str.length&&i<=s2Str.length){
+                param=parseInt(s1Str[s1Str.length-i])+parseInt(s2Str[s2Str.length-i])+(result[0]?result[0]:0)
+            }else{
+                param=s1Str.length-i<0?0:parseInt(s1Str[s1Str.length-i])
+//                console.log(',param1,'+param)
+                param=param+(s2Str.length-i<0?0:parseInt(s2Str[s2Str.length-i]))
+//                console.log(',param2,'+param)
+                param=param+(result[0]?result[0]:0)
+            }
+            console.log('i,'+i+',param,'+param)
+            if(param/10<1){
+                result[0]=param
+                if(i<maxLength){
+                    result=[0,...result]
+                }
+            }else{
+                result[0]=param%10
+                result=[1,...result]
+            }
+        }
+        console.log('result')
+        console.log(result)
+    }
+    console.log(handler(11456718,2224639))
+</script>
+</body>
+</html>

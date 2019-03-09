@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>大整数相加</title>
+</head>
+<body>
+    <div id="h"></div>
+<script type="text/javascript">
+    function handler(s1,s2){
+//        逆序实现
+        let str1=s1.toString().split('').reverse()
+        let str2=s2.toString().split('').reverse()
+        let maxLength=str1.length>str2.length?str1.length:str2.length
+        let minLength=str1.length>str2.length?str2.length:str1.length
+        let result=[]
+        for(let i=0;i<maxLength;i++){
+            let param=0
+            if(i<minLength){
+                param=(result[i]?result[i]:0)+parseInt(str1[i])+parseInt(str2[i])
+            }else{
+                param=result[i]?result[i]:0
+                param=param+parseInt(str1[i]?str1[i]:0)+parseInt(str2[i]?str2[i]:0)
+            }
+            console.log('i:'+i+',param:'+param)
+            if(param/10<1){
+                result[i]=param
+            }else{
+                result[i]=param%10
+                result[i+1]=1
+            }
+        }
+        return result.reverse().join('')
+    }
+    //                       95169
+    console.log(handler(95169,9883))
+</script>
+</body>
+</html>

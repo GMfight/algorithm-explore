@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>bind实现</title>
+</head>
+<body>
+<script type="text/javascript">
+//    第一步 bind的用法
+//    1.劫持函数，指定this
+//    2.返回新函数
+//    3.可传入参数
+//    4.柯里化（结合2中返回新函数，只能返回一次新函数，做一次颗粒化调用
+    Function.prototype.myBind=function(){
+        let func=this
+        let obj=arguments[0]
+        let argu=Array.prototype.slice.call(arguments)
+        return function(){
+            return func.apply(obj,argu.slice(1).concat(Array.prototype.slice.call(arguments)))
+        }
+    }
+    var name='B'
+    function A(name){
+        this.name=name
+        this.print=function(id,age,date){
+            console.log('name:'+this.name+',id:'+id+',age:'+age+',date:'+date)
+        }
+    }
+    let objA=new A('张三')
+    let print=objA.print.myBind(this,'aaa')
+    print(22)
+    print('2019')
+</script>
+</body>
+</html>

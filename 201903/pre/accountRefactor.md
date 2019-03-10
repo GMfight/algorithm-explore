@@ -1,0 +1,9 @@
+####正则匹配
+1.字符串常用的正则相关的方法
+    str.search(reg)
+    str.match(reg)
+    str.replace(reg,strnew)
+2.正则表达式的一些应用
+    \s空白字符
+    [0-9]
+    a(?=b)匹配到以b结尾的a

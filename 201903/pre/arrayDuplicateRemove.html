@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>数组去重</title>
+</head>
+<body>
+<script type="text/javascript">
+//    数组去重1（使用set无法应对对象数组的去重）
+    function handler(arr){
+        return Array.from(new Set(arr))
+    }
+//    console.log(handler(param))
+//  冒泡去重（需要先对数组排序）
+    function handlerBubble(arr){
+        arr=arr.sort((a,b)=>{
+            return a-b
+        })
+        console.log(arr)
+        for(let i=1;i<arr.length;i++){
+            if(arr[i]==arr[i-1]){
+                arr.splice(i-1,1)
+            }
+        }
+        return arr
+    }
+//    console.log(handlerBubble([1,2,6,4,12,0,3,2]))
+//    快排去重
+    function handlerQuick(arr){
+        if(arr.length<=1) return arr
+        let leftA=[],rightA=[]
+        for(let i=1;i<arr.length;i++){
+            if(arr[i]>arr[0]){
+                rightA=[arr[i],...rightA]
+            }else if(arr[i]<arr[0]){
+                leftA=[arr[i],...leftA]
+            }else{
+                arr.splice(i,1)
+            }
+        }
+        arr=[...(handlerQuick(leftA)),arr[0],...(handlerQuick(rightA))]
+        return arr
+    }
+    console.log(handlerQuick([1,2,6,4,12,0,3,2]))
+</script>
+</body>
+</html>

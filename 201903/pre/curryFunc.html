@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>柯里化实现</title>
+</head>
+<body>
+<script type="text/javascript">
+    //    柯里化
+//    1.柯里化过程是收集参数到一块处理的过程
+    function Cur(fun){
+        console.log('step into cur')
+        function _c(argNum,argList){
+            console.log('argNum：'+argNum)
+            let result=argNum==0?fun.apply(null,argList):function(x){
+                console.log('x：'+x)
+                return _c(argNum--,argList.concat(x))
+            }
+            return result
+        }
+        return _c(fun.length,[])
+    }
+    let newSum=Cur(function sum(a,b,c,d,e){
+        return a+b+c+d+e
+    })
+
+    newSum(2)(6)
+</script>
+</body>
+</html>

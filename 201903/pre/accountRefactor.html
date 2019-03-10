@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>金额转换</title>
+</head>
+<body>
+<script type="text/javascript">
+    function handler(str){
+        let array=str.replace(/(?=(\B[0-9]{3})+$)/g,',')
+        return array
+    }
+    console.log(handler('110000000'))
+</script>
+</body>
+</html>

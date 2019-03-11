@@ -26,4 +26,6 @@
         fBind.prototype=new F()
         return fBind
     }
-5.
+5.js顶层对象和全局变量
+    es5中var function声明的全局变量即为顶层对象，let,const,class声明的全局变量不是顶层对象
+    顶层对象是window，全局中，this指向顶层对象，可以访问到var的属性，访问不到let的属性

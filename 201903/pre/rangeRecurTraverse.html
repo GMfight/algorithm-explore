@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>广度优先遍历</title>
+</head>
+<body>
+<script type="text/javascript">
+    var obj={
+        id:'000',
+        name:'树根节点',
+        childs:[
+            {
+                id:'001',
+                name:'第一层1',
+                childs:[
+                    {
+                        id:'011',
+                        name:'001-1'
+                    },{
+                        id:'012',
+                        name:'001-2'
+                    }
+                ]
+            },{
+                id:'002',
+                name:'第一层2',
+                childs:[
+                    {
+                        id:'021',
+                        name:'021-1',
+                        childs:[
+                            {
+                                id:'0211',
+                                name:'021-1-1'
+                            },{
+                                id:'0212',
+                                name:'021-1-2'
+                            },{
+                                id:'0213',
+                                name:'021-1-3'
+                            }
+                        ]
+                    },{
+                        id:'022',
+                        name:'022-2'
+                    }
+                ]
+            },{
+                id:'003',
+                name:'第一层3',
+                childs:[
+                    {
+                        id:'031',
+                        name:'031-1'
+                    },{
+                        id:'032',
+                        name:'032-2'
+                    }
+                ]
+            },{
+                id:'004',
+                name:'第一层4',
+                childs:[
+                    {
+                        id:'041',
+                        name:'041-1'
+                    },{
+                        id:'042',
+                        name:'042-2'
+                    }
+                ]
+            }
+        ]
+    }
+//    非递归遍历实现，递归遍历未实现
+//    实现原理：参照深度非递归遍历，构造队列实现
+    function recurTraverse(root){
+
+    }
+//    console.log(recurTraverse(obj))
+
+    //    非递归方式
+    function unRecurTraverse(root){
+        let result=new Array()
+        result.push({
+            id:root.id,
+            name:root.name
+        })
+        let stack=new Array()
+        stack.push(root)
+        while(stack.length>0){
+            let item=stack.shift()
+            if(item.childs){
+                for(let i=0;i<item.childs.length;i++){
+                    stack.push(item.childs[i])
+                    result.push({
+                        id:item.childs[i].id,
+                        name:item.childs[i].name
+                    })
+                }
+            }
+        }
+        return result
+    }
+//    console.log(unRecurTraverse(obj))
+</script>
+</body>
+</html>

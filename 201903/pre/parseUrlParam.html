@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>url解析</title>
+</head>
+<body>
+<script type="text/javascript">
+let url='https://www.baidu.com/s?wd=js%20duplicate%E5%87%BD%E6%95%B0&pn=10&oq=js%20duplicate%E5%87%BD%E6%95%B0&tn=98012088_10_dg&ie=utf-8&ch=3&rsv_idx=1&rsv_pq=deb3812800050024&rsv_t=dd4dRIMOrClqAKh11uNnCgIlm61%2BsIfI0fgdoin7baqdMpBvH7%2BwKOW45dao1NsOeWWxQpk&rsv_page=1';
+function handler(url){
+    let param1=url.match(/(\?|&)\w*\=/g)
+    let param2=url.match(/\=[\w%-]*(&|\b)/g)
+    for(item in param1){
+        result.push({
+            key:param1[item].replace(/(\?|&|=)/g,''),
+            value:param2[item].replace(/(=|&)/g,'')
+        })
+    }
+    return result
+}
+console.log(handler(url))
+</script>
+</body>
+</html>

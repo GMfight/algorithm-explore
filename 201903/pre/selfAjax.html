@@ -64,6 +64,7 @@ function test(){
                 let contentType=obj.contentType?obj.contentType:'x-www-urlencoded'
                 xhr.setRequestHeader('Content-Type',contentType)
                 xhr.send(JSON.stringify(obj.params))
+
             }else{
                 xhr.send(null)
             }

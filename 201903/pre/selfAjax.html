@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>ajax重新封装</title>
+</head>
+<body>
+<button id="test">测试</button>
+<script type="text/javascript">
+//    第一部分：ajax最初用法
+document.getElementById('test').addEventListener('click',test)
+function test(){
+    console.log('enter test function')
+    var xhr=new XMLHttpRequest()
+    xhr.withCredentials = true
+    xhr.open('post','http://localhost:9000/ajaxPostTest?time='+new Date(),true)
+
+    xhr.onreadystatechange=function(){
+        if(xhr.readyState==4&&xhr.status==200){
+            console.log('请求成功')
+        }
+    }
+    let postParam={
+        "id":1,
+        "name":'天气'
+    }
+    let postParam1={
+        id:2,
+        name:'风声'
+    }
+    let postParam2=JSON.stringify(postParam)
+    xhr.setRequestHeader("ContentType","application/json; charset=utf-8")
+    xhr.send(postParam2)
+}
+
+//  第二部分：封装ajax
+    function handler(url,method,param,contentType){
+        this.url=url
+        this.method=method
+        this.params=param
+        this.contentType=contentType
+        let xhr=new XMLHttpRequest()
+        if(this.method.toString().toUpperCase()=='GET'){
+            let newUrl=''
+            for(item in this.params){
+                newUrl=newUrl+'&'+item+'='+this.params[item]
+            }
+            url=url+'?time='+Math.random()+newUrl
+        }
+        let obj=this
+        xhr.open(this.method,this.url,true)
+        return new Promise(function(resolve,reject){
+            console.log('step into promise')
+            xhr.onreadystatechange=function(){
+                if(xhr.readyState==4){
+                    if(xhr.status==200){
+                        resolve(xhr)
+                    }else{
+                        reject(xhr)
+                    }
+                }
+            }
+            if(obj.method.toString().toUpperCase()=='POST'){
+                let contentType=obj.contentType?obj.contentType:'x-www-urlencoded'
+                xhr.setRequestHeader('Content-Type',contentType)
+                xhr.send(JSON.stringify(obj.params))
+            }else{
+                xhr.send(null)
+            }
+        })
+
+    }
+    let param={
+        id:'111',
+        name:'张三'
+    }
+    handler('http://localhost:9000/ajaxGetTest','get',param).then((request)=>{
+        console.log('request scuccess')
+    },()=>{
+        console.log('request faild')
+    })
+</script>
+</body>
+</html>

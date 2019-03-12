@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>dom遍历</title>
+</head>
+<body>
+<script type="text/javascript">
+    var name='张三',id='AAA'
+    function render(str){
+        str=str.replace(/\{\{name+\}\}/g,this.name)
+        return str=str.replace(/\{\{id+\}\}/g,this.id)
+    }
+    console.log(render('{{name}}123{{id}}456{{name}}hello,this is {{id}}'))
+</script>
+</body>
+</html>

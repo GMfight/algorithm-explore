@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>数组按照奇偶重排列</title>
+</head>
+<body>
+<script type="text/javascript">
+//    给定一个数组排序，使得奇数位的值不大于相邻偶数位的值
+    function handler(arr){
+        arr=arr.sort((a,b)=>{
+            return a-b
+        })
+        let oddLength=Math.ceil(arr.length/2)
+        let oddArray=arr.slice(0,oddLength)
+        let evenArray=arr.slice(oddLength,arr.length)
+        let result=new Array()
+        while(evenArray.length>0){
+            result.push(oddArray.shift())
+            result.push(evenArray.shift())
+            if(evenArray.length==0&&oddArray.length>0){
+                result.push(oddArray.shift())
+            }
+        }
+        return result
+    }
+    console.log(handler([1,12,3,5,6,34,8,9,10,11,7]))
+</script>
+</body>
+</html>

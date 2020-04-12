@@ -1,0 +1,112 @@
+<!-- 汉语转阿拉伯数字 -->
+<!DOCTYPE >
+<html>
+  <head> </head>
+  <body>
+    <script>
+      function switchNum(str) {
+        let unitMaps = [
+          {
+            key: "十",
+            value: 10,
+          },
+          {
+            key: "拾",
+            value: 10,
+          },
+          {
+            key: "佰",
+            value: 100,
+          },
+          {
+            key: "百",
+            value: 100,
+          },
+          {
+            key: "千",
+            value: 1000,
+          },
+        ];
+        let numMaps = [
+          {
+            key: "零",
+            value: 0,
+          },
+          {
+            key: "一",
+            value: 1,
+          },
+          {
+            key: "二",
+            value: 2,
+          },
+          {
+            key: "三",
+            value: 3,
+          },
+          {
+            key: "四",
+            value: 4,
+          },
+          {
+            key: "五",
+            value: 5,
+          },
+          {
+            key: "六",
+            value: 6,
+          },
+          {
+            key: "七",
+            value: 7,
+          },
+          {
+            key: "八",
+            value: 8,
+          },
+          {
+            key: "九",
+            value: 9,
+          },
+        ];
+
+        let result = 0;
+
+        for (let i = unitMaps.length - 1; i >= 0; i--) {
+          if (!str || str.length == 0) continue;
+
+          let reg = new RegExp(`[\u4e00-\u9fa5](?=${unitMaps[i].key})`, "gim");
+          //   当前单位级别的数量-中文
+          let numObj = str.match(reg);
+          if (numObj) {
+            let num_index = numMaps.find((znMap) => {
+              return znMap.key === numObj[0];
+            });
+            result += num_index.value * unitMaps[i].value;
+            str = str.substring(2, str.length);
+          }
+          //   console.log(numObj, unitMaps[i].key, 79);
+        }
+        // console.log(str, 86);
+        if (str && str.length > 0) {
+          for (let j = 0; j < str.length; j++) {
+            let valueMap = numMaps.find((numMap) => {
+              return numMap.key === str[j];
+            });
+            // console.log(valueMap, 93);
+            result += valueMap.value;
+          }
+          return result;
+        } else {
+          return result;
+        }
+      }
+      console.log(switchNum("九十"));
+      //   三百零一;
+      //   一百一十一;
+      //   一百二十;
+      //   九十五;
+      //   九十;
+    </script>
+  </body>
+</html>

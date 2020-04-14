@@ -1,0 +1,32 @@
+<!-- 两个有序数组合并 -->
+<!DOCTYPE >
+<html>
+  <head> </head>
+  <body>
+    <script>
+      /**
+       * @param {string} s
+       * @return {number}
+       */
+      var lengthOfLastWord = function (s) {
+        if (s.length === 0) return 0;
+        let sArray = s.split(" ");
+        let index = sArray.length - 1;
+        while (index >= 0) {
+          let finalWord = sArray[index];
+          let finalWordArray = finalWord.split("");
+          if (
+            finalWord.substring(0, 1).toUpperCase() ===
+            finalWord.substring(0, 1)
+          ) {
+            continue;
+          } else {
+            index--;
+          }
+        }
+        if (index >= 0) return sArray[index].length;
+        return 0;
+      };
+    </script>
+  </body>
+</html>

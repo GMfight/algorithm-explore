@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+
+    </body>
+    <script type="text/javascript">
+    
+        const list = [
+        {
+          // id: Math.random(),
+          name: "books",
+          title: "books",
+          path: [],
+        },
+        {
+          // id: Math.random(),
+          name: "programming",
+          title: "programming",
+          path: ["books"],
+        },
+        {
+          // id: Math.random(),
+          name: "languages",
+          title: "languages",
+          path: ["books", "programming"],
+        },
+        {
+          // id: Math.random(),
+          name: "database",
+          title: "database",
+          path: ["books", "programming"],
+        },
+        {
+          // id: Math.random(),
+          name: "mongodb",
+          title: "mongodb",
+          path: ["books", "programming", "database"],
+        },
+        {
+          // id: Math.random(),
+          name: "dbm",
+          title: "dbm",
+          path: ["books", "programming", "database"],
+        },
+      ];
+
+      let rightList=[{
+          name:'right',
+          title:'right',
+          path:[]
+      },{
+          name:'menu',
+          title:'menu',
+          path:['right']
+      },{
+          name:'operation',
+          title:'operation',
+          path:['right']
+      },{
+          name:'index',
+          title:'index',
+          path:['right','menu']
+      }]
+      function refactList(list) {
+        // b-a path降序
+        // return b.path.length - a.path.length
+        // a-b path升序
+        let plist = list.sort((a, b) => {
+          return a.path.length - b.path.length;
+        });
+        // 叶子节点
+        if (!plist[0].path || plist[0].path === 0) {
+          return plist;
+        }
+        let roots=plist.filter(o=>{
+            return !o.path||o.path.length===0;
+        })
+
+        let menuList=[]
+        if(roots&&roots.length>1){
+            roots.forEach(root=>{
+                // let rootIndex=plist.findIndex(o=>o.name===root.name);
+                let rootList=refactList([root,...plist.slice(roots.length,plist.length)])
+                menuList.push(rootList)
+            })
+            return menuList;
+        }
+        // console.log('plist');
+        // console.log(plist)
+        let root = plist.shift();
+        let curName = root.name;
+        let neighbors = plist.filter((o) => o.path[o.path.length - 1] === curName);
+        if (neighbors && neighbors.length > 0) {
+            root.children = [];
+            // console.log('neighbors');
+            // console.log(neighbors)
+            neighbors.forEach((o) => {
+            let pIndex = plist.findIndex((p) => o.name === p.path[p.path.length - 1]);
+            // console.log(`neighbor.name:${o.name}`)
+            // console.log(`pIndex:${pIndex}`)
+            // 有子节点
+            if (pIndex >= 0) {
+              let children = refactList([o,...plist.slice(neighbors.length, plist.length)]);
+              root.children.push(children)
+            }else{
+                root.children.push(o);
+            }
+          });
+        }
+        return root;
+    }
+    // 一棵树
+    console.log(refactList(list));
+    // 多个树
+
+    </script>
+</html>

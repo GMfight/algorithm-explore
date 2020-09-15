@@ -9,6 +9,7 @@
        * @return {number}
        */
       var lengthOfLastWord = function (s) {
+        s = s.trim();
         if (s.length === 0) return 0;
         let sArray = s.split(" ");
         let index = sArray.length - 1;

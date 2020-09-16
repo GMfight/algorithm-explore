@@ -246,21 +246,32 @@ function checkBST(root, val, dir) {
 }
 function isValidBST(root) {
   if (!root || root.val === null || root.val === "undefined") return true;
-  return checkBST2(root);
+  return checkBST2(root, null, null);
 }
 
 // 思路二：用区间策略修改
 function checkBST2(root, upper, lower) {
   let result = true;
   if (root.left) {
-    if (upper) if (root.left.val > upper || root.left.val < lower) return false;
-    result = checkBST2(root.left, root.val, lower);
+    if (upper !== null && upper !== "undefined") {
+      if (root.left.val >= upper) return false;
+    }
+    if (lower !== null && lower !== "undefined") {
+      if (root.left.val <= lower) return false;
+    }
+    result = root.left.val < root.val && checkBST2(root.left, root.val, lower);
     // checkBST2(root.left,)
   }
   if (!result) return false;
   if (root.right) {
-    if (root.right.val < lower || root.right.val > upper) return false;
-    result = checkBST2(root.right, upper, root.val);
+    if (upper !== null && upper !== "undefined") {
+      if (root.right.val >= upper) return false;
+    }
+    if (lower !== null && lower !== "undefined") {
+      if (root.right.val <= lower) return false;
+    }
+    result =
+      root.right.val > root.val && checkBST2(root.right, upper, root.val);
   }
   return result;
 }
@@ -268,6 +279,31 @@ function checkBST2(root, upper, lower) {
 // 思路三：借助中序遍历，升序属性
 
 let testData4 = {
+  val: 2147483647,
+  left: {
+    val: -2147483648,
+    // left: {
+    //   val: -90001,
+    // },
+    // right: {
+    //   val: -89996,
+    //   right: {
+    //     val: -80000,
+    //   },
+    // },
+  },
+  // right: {
+  //   val: -534,
+  // left: {
+  //   val: -4324,
+  // },
+  // right: {
+  //   val: -61,
+  // },
+  // },
+};
+
+let testData5 = {
   val: 3,
   left: {
     val: 1,
@@ -275,26 +311,169 @@ let testData4 = {
       val: 0,
     },
     right: {
-      val: 2,
-      right: {
-        val: 3,
+      val: 3,
+    },
+  },
+};
+// console.log(isValidBST(testData5));
+
+// 5.（100）给定两个二叉树，编写一个函数来检验它们是否相同。
+// 如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的
+
+// 思路2：按照层级遍历树(错误思路)
+// 思路3（深度优先遍历）（成功）
+
+function isSameTree(a, b) {
+  let aStatus = true,
+    bStatus = true;
+  if (!a || a.val === null || a.val === "undefined") {
+    aStatus = false;
+  }
+  if (!b || b.val === null || b.val === "undefined") {
+    bStatus = false;
+  }
+  if (!aStatus && !bStatus) return true;
+  if (!aStatus) return false;
+  if (!bStatus) return false;
+
+  let traverseTree = (root) => {
+    let result = [];
+    // nodearr.push(root);
+    result.push(root.val);
+    if (root.left) {
+      let arr = traverseTree(root.left);
+      result.push(...arr);
+    } else {
+      result.push("s");
+    }
+    if (root.right) {
+      let arr = traverseTree(root.right);
+      result.push(...arr);
+    } else {
+      result.push("s");
+    }
+
+    return result;
+  };
+  let a_str = traverseTree(a).join("");
+  let b_str = traverseTree(b).join("");
+  return a_str === b_str;
+}
+
+let e = {
+  val: 5,
+  left: {
+    val: 4,
+    right: {
+      val: 1,
+      left: {
+        val: 2,
       },
     },
   },
   right: {
-    val: 5,
-    left: {
-      val: 4,
-    },
+    val: 1,
     right: {
-      val: 6,
+      val: 4,
+      left: {
+        val: 2,
+      },
     },
   },
 };
-console.log(isValidBST(testData4));
 
-// 5.（100）给定两个二叉树，编写一个函数来检验它们是否相同。
+let aObj = {
+  val: 1,
+  right: {
+    val: 2,
+  },
+};
+let bObj = {
+  val: 1,
+  left: {
+    val: 2,
+  },
+};
 
-// 如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的
+// 二叉树，深度遍历和先序遍历是否重叠
+// 6.给定一个二叉树，检查它是否是镜像对称。
+// 含义：每层的结点是偶数，且遍历到的字符串，对称(思路不可行)
+// 修改：一层级内判断是否对称
+// 对称树特点：从左遍历和从右遍历，得到的值一样
+function isSymmetric(root) {
+  if (!root || root.val === null || root.val === "undefined") return true;
+  let arr = [],
+    result = [];
+  arr.push(root, root);
+  while (arr && arr.length > 0) {
+    let left = arr.shift();
+    let right = arr.shift();
+    if (!left && !right) {
+      continue;
+    }
+    if (!left || !right) return false;
+    if (left.val !== right.val) {
+      return false;
+    }
+    arr.push(left.left);
+    arr.push(right.right);
+    arr.push(left.right);
+    arr.push(right.left);
+  }
+  return true;
+}
+// 6.2用迭代思路
+function isSymmetric2(root) {
+  let leftT = function (root) {
+    if (!root) return "s";
+    return root.val + leftT(root.left) + leftT(root.right);
+  };
+  let left_result = leftT(root);
+  let rightT = function (root) {
+    if (!root) return "s";
+    return root.val + rightT(root.right) + rightT(root.left);
+  };
+  let right_result = rightT(root);
+  console.log(left_result, "left");
+  console.log(right_result, "right");
+}
 
-// 6.给定一个二叉树，检查它是否是镜像对称的。
+let testData6 = {
+  val: 1,
+  left: {
+    val: 2,
+    // left: {
+    //   val: 2,
+    // },
+    right: {
+      val: 3,
+    },
+  },
+  right: {
+    val: 2,
+    // left: {
+    //   val: 4,
+    // },
+    right: {
+      val: 3,
+    },
+  },
+};
+
+let testData_right = {
+  val: 1,
+  left: {
+    val: 2,
+    right: {
+      val: 3,
+    },
+  },
+  right: {
+    val: 2,
+    right: {
+      val: 3,
+    },
+  },
+};
+
+console.log(isSymmetric2(testData_right));

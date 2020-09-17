@@ -328,6 +328,50 @@ let testData9 = {
 };
 
 // 10.（144）二叉树前序遍历
-
+有内存优化空间和性能优化空间;
+function preorderTraversal(root) {
+  if (!root || root.val === null || root.val === "undefined") return [];
+  if (!root.left && !root.right) return [root.val];
+  let result = [];
+  result.push(root.val);
+  if (root.left) {
+    result.push(...preorderTraversal(root.left));
+  }
+  if (root.right) {
+    result.push(...preorderTraversal(root.right));
+  }
+  return result;
+}
+let testData10 = {
+  val: 1,
+  right: {
+    val: 2,
+    left: {
+      val: 3,
+    },
+  },
+  // left: {
+  //   val: 9,
+  //   left: {
+  //     val: 3,
+  //   },
+  // },
+};
+// console.log(preorderTraversal(testData10));
 // 11.（145）二叉树后续遍历
 // console.log(minDepth(testData9));
+function postorderTraversal(root) {
+  if (!root || root.val === null || root.val === "undefined") return [];
+  if (!root.left && !root.right) return [root.val];
+  let result = [];
+  if (root.left) {
+    result.push(...postorderTraversal(root.left));
+  }
+  if (root.right) {
+    result.push(...postorderTraversal(root.right));
+  }
+  result.push(root.val);
+  return result;
+}
+
+// 12.深度优先搜索和广度优先搜索

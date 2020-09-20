@@ -56,22 +56,60 @@ function singleNumber(nums) {
 // console.log(singleNumber([4, 1, 2, 1, 2]));
 // 排序相关算法整理
 // 4.（147）链表插入排序
-// 插入排序是迭代的，每次只移动一个元素，直到所有元素可以形成一个有序的输出列表。
-// 每次迭代中，插入排序只从输入数据中移除一个待排序的元素，找到它在序列中适当的位置，并将其插入。
-// 重复直到所有输入数据插入完为止。
 // * function ListNode(val) {
 //     *     this.val = val;
 //     *     this.next = null;
 //     * }
-function insertionSortList(head)
+// 没完全理解？
+function insertionSortList(head) {
+  if (!head || head.val === null || head.val === "undefined") return null;
+  if (!head.next) return head;
+  let allNode = {
+    val: 0,
+    next: head,
+  };
+  let curnode = allNode.next;
+  while (curnode.next) {
+    let nextnode = curnode.next;
+    if (curnode.val > nextnode.val) {
+      let prenode = allNode;
+      while (prenode && prenode.next.val < curnode.next.val)
+        prenode = prenode.next;
+      curnode.next = nextnode.next;
+      nextnode.next = prenode.next;
+      prenode.next = nextnode;
+    } else {
+      curnode = curnode.next;
+    }
+  }
+  return allNode.next;
+}
+let testData4 = {
+  val: 4,
+  next: {
+    val: 2,
+    next: {
+      val: 1,
+      next: {
+        val: 3,
+      },
+    },
+  },
+};
+// console.log(insertionSortList(testData4));
+
 // 5.(242)给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
 // s = "anagram", t = "nagaram"
 // 输出: true
 // s = "rat", t = "car"
 // 输出: false
-function isAnagram(s, t) {}
-
-// 6.链表排序
+function isAnagram(s, t) {
+  s = s.split("").sort().join("");
+  t = t.split("").sort().join("");
+  return s === t;
+}
+// console.log(isAnagram("rat", "tar"));
+// 6.(148)链表排序
 // 在 O(n log n) 时间复杂度和常数级空间复杂度下，对链表进行排序。
 // 示例 1:
 // 输入: 4->2->1->3
@@ -81,7 +119,36 @@ function isAnagram(s, t) {}
 //     *     this.val = (val===undefined ? 0 : val)
 //     *     this.next = (next===undefined ? null : next)
 //     * }
-function sortList(head){}
+function sortList(head) {
+  let allnode = {
+    val: -9999,
+    next: head,
+  };
+  let curnode = allnode.next;
+  while (curnode.next) {
+    let prenode = curnode;
+    let nextnode = curnode.next;
+    if (nextnode.next) {
+      let next = nextnode.next;
+      while (next) {
+        if (nextnode.val > next.val) {
+          let val = nextnode.val;
+          nextnode.val = next.val;
+          next.val = nextnode.val;
+          next = next.next;
+        }
+      }
+    }
+    if (curnode.val > nextnode.val) {
+      let val = nextnode.val;
+      nextnode.val = curnode.val;
+      curnode.val = val;
+    }
+    curnode = prenode.next;
+  }
+  console.log(allnode.next);
+}
+console.log(sortList(testData4));
 
 // 7.（922）按照奇偶数排序
 // 给定一个非负整数数组 A， A 中一半整数是奇数，一半整数是偶数。
@@ -91,14 +158,14 @@ function sortList(head){}
 // 输出：[4,5,2,7]
 // 解释：[4,7,2,5]，[2,5,4,7]，[2,7,4,5] 也会被接受。
 // 你可以返回任何满足上述条件的数组作为答案。
-function sortArrayByParityII(arr){}
+function sortArrayByParityII(arr) {}
 
 // 8.(976)三角形最大周长
 // 给定由一些正数（代表长度）组成的数组 A，返回由其中三个长度组成的、面积不为零的三角形的最大周长。
 // 如果不能形成任何面积不为零的三角形，返回 0。
 // 输入：[2,1,2]
 // 输出：5
-function largestPerimeter(){}
+function largestPerimeter() {}
 // 9.(1356)给你一个整数数组 arr 。请你将数组中的元素按照其二进制表示中数字 1 的数目升序排序。
 // 如果存在多个数字二进制中 1 的数目相同，则必须将它们按照数值大小升序排列。
 // 请你返回排序后的数组。
@@ -109,7 +176,7 @@ function largestPerimeter(){}
 // [3,5,6] 有 2 个 1 。
 // [7] 有 3 个 1 。
 // 按照 1 的个数排序得到的结果数组为 [0,1,2,4,8,3,5,6,7]
-function sortByBits(arr){}
+function sortByBits(arr) {}
 
 // 10.(1366)
 // 现在有一个特殊的排名系统，依据参赛团队在投票人心中的次序进行排名，每个投票者都需要按从高到低的顺序对参与排名的所有团队进行排位。
@@ -127,7 +194,7 @@ function sortByBits(arr){}
 // B 队获得两票「排位第二」，三票「排位第三」。
 // C 队获得三票「排位第二」，两票「排位第三」。
 // 由于 C 队「排位第二」的票数较多，所以 C 队排第二，B 队排第三。
-function rankTeams(votes){}
+function rankTeams(votes) {}
 
 // 11.(1502)判断能否形成等差数列
 // 给你一个数字数组 arr 。
@@ -136,7 +203,7 @@ function rankTeams(votes){}
 // 输入：arr = [3,5,1]
 // 输出：true
 // 解释：对数组重新排序得到 [1,3,5] 或者 [5,3,1] ，任意相邻两项的差分别为 2 或 -2 ，可以形成等差数列。
-function canMakeArithmeticProgression(arr){}
+function canMakeArithmeticProgression(arr) {}
 
 // 12.（1528）重新排列字符串
 // 给你一个字符串 s 和一个 长度相同 的整数数组 indices 。
@@ -145,32 +212,84 @@ function canMakeArithmeticProgression(arr){}
 // 输入：s = "codeleet", indices = [4,5,6,7,0,2,1,3]
 // 输出："leetcode"
 // 解释：如图所示，"codeleet" 重新排列后变为 "leetcode" 。
-function restoreString (s, indices) {
-
-};
+function restoreString(s, indices) {}
 // 2.搜索相关算法整理
 // 13.(27)给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。
 
 // 不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并 原地 修改输入数组。
 
 // 元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
-function removeElement(nums, val) {
-
-};
+function removeElement(nums, val) {}
 
 // 14.(28)给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。
 // 输入: haystack = "hello", needle = "ll"
 // 输出: 2
-function strStr(haystack, needle) {
-
-};
+function strStr(haystack, needle) {}
 
 // 15.(88)给你两个有序整数数组 nums1 和 nums2，请你将 nums2 合并到 nums1 中，使 nums1 成为一个有序数组。
 // 初始化 nums1 和 nums2 的元素数量分别为 m 和 n 。
 // 你可以假设 nums1 有足够的空间（空间大小大于或等于 m + n）来保存 nums2 中的元素。
-function merge (nums1, m, nums2, n) {}
+function merge(nums1, m, nums2, n) {}
 
 // 16.(125)给定一个字符串，验证它是否是回文串，只考虑字母和数字字符，可以忽略字母的大小写。
-function isPalindrome(s){}
+function isPalindrome(s) {}
 
+// 17.（21）合并两个有序链表
+function mergeTwoLists(leftls, rightls) {
+  let leftList = {
+    val: 0,
+    next: leftls,
+  };
+  let rightList = {
+    val: 0,
+    next: rightls,
+  };
+  let left = leftList.next,
+    right = rightList.next;
+  while (left.next && right.next) {
+    let leftPre = leftList;
+    while (leftPre.next.val < left.next.val) leftPre = leftList.next;
 
+    let rightPre = rightList;
+    while (rightPre.next.val < right.next.val) rightPre = rightList.next;
+
+    if (left.val > right.val) {
+      let newnode = {
+        val: right.val,
+      };
+      newnode.next = left;
+
+      leftPre.next = newnode;
+
+      rightPre.next = right.next;
+      right = right.next;
+    } else {
+      left = left.next;
+    }
+  }
+  if (left.next) {
+    return leftList;
+  }
+  if (right.next) {
+    left.next = right;
+  }
+}
+
+let leftList = {
+  val: 1,
+  next: {
+    val: 2,
+    next: {
+      val: 4,
+    },
+  },
+};
+let rightList = {
+  val: 1,
+  next: {
+    val: 3,
+    next: {
+      val: 4,
+    },
+  },
+};

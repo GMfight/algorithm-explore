@@ -328,7 +328,7 @@ let testData9 = {
 };
 
 // 10.（144）二叉树前序遍历
-有内存优化空间和性能优化空间;
+// 有内存优化空间和性能优化空间;
 function preorderTraversal(root) {
   if (!root || root.val === null || root.val === "undefined") return [];
   if (!root.left && !root.right) return [root.val];

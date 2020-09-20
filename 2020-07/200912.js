@@ -1,4 +1,5 @@
-//1.（94） 先序转中序
+// 二叉树
+//1.（94） 先序转中序（中序遍历）
 // 值为null，子结点结束
 function inorderTraversal(root) {
   let result = [];
@@ -199,7 +200,6 @@ var generateTrees = function (n) {
 
 // 3.给定一个整数 n，求以 1 ... n 为节点组成的二叉搜索树有多少种？
 // 补充，用数学思维解决，递归过于消耗空间
-// 递归（未覆盖所有场景）
 function numTrees(n) {
   if (n <= 2) return n;
   let getNum = (start, end) => {
@@ -322,7 +322,7 @@ let testData5 = {
 
 // 思路2：按照层级遍历树(错误思路)
 // 思路3（深度优先遍历）（成功）
-
+// 思路4(递归)未尝试
 function isSameTree(a, b) {
   let aStatus = true,
     bStatus = true;
@@ -400,6 +400,7 @@ let bObj = {
 // 含义：每层的结点是偶数，且遍历到的字符串，对称(思路不可行)
 // 修改：一层级内判断是否对称
 // 对称树特点：从左遍历和从右遍历，得到的值一样
+// 思路一
 function isSymmetric(root) {
   if (!root || root.val === null || root.val === "undefined") return true;
   let arr = [],

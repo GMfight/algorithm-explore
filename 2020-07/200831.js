@@ -110,4 +110,65 @@ function nearFour(nums, target) {
   console.log(res);
   return res;
 }
-console.log(nearFour([1, 0, -1, 0, -2, 2], 0), 98);
+// console.log(nearFour([1, 0, -1, 0, -2, 2], 0), 98);
+// 3.（18）
+// 给定一个包含 n 个整数的数组 nums 和一个目标值 target，判断 nums 中是否存在四个元素 a，b，c 和 d ，使得 a + b + c + d 的值与 target 相等？找出所有满足条件且不重复的四元组。
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[][]}
+ */
+function fourSum(nums, target) {
+  let arr = [],
+    result = [];
+  let numLength = nums.length;
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i; j < nums.length; j++) {
+      if (i == j) {
+        arr.push({
+          key: [i, j],
+          value: 99999,
+        });
+      } else {
+        arr.push({ key: [i, j], value: nums[i] + nums[j] });
+      }
+    }
+  }
+  for (let i = 0; i < arr.length; i++) {
+    let curObj = arr[i];
+    arr.filter((o, oIndex) => {
+      if (
+        o.key[0] == curObj.key[0] ||
+        o.key[0] == curObj.key[1] ||
+        o.key[1] == curObj.key[0] ||
+        o.key[1] == curObj.key[1]
+      ) {
+        // console.log(o.key[0], o.key[1], i, "key重复");
+        return false;
+      }
+      if (o.value + curObj.value === target) {
+        result[
+          [
+            nums[curObj.key[0]],
+            nums[curObj.key[1]],
+            nums[o.key[0]],
+            nums[o.key[1]],
+          ]
+            .sort()
+            .join("")
+        ] = [
+          nums[curObj.key[0]],
+          nums[curObj.key[1]],
+          nums[o.key[0]],
+          nums[o.key[1]],
+        ].sort();
+        // console.log(o, 89);
+        return true;
+      }
+      return false;
+    });
+  }
+  let res = Object.values(result);
+  console.log(res);
+  return res;
+}

@@ -21,6 +21,7 @@ async function batchReq(urls) {
     i++;
   }
   for (let i = 0; i < urls.length; i++) {
+    // console.log('i',i,new Date().getTime())
     res[i] = await task[i].handler
   }
   return res;
@@ -30,7 +31,7 @@ function myReq(param) {
     let execTime = Number(Math.random().toString().substring(3, 7))
     console.log('start', param, 20, execTime, `curtime:${new Date().getTime()}`)
     setTimeout(() => {
-      console.log('-end-', param, 20, execTime, `curtime:${new Date().getTime()}`)
+      // console.log('-end-', param, 20, execTime, `curtime:${new Date().getTime()}`)
 
       return resolve({
         param,

@@ -23,27 +23,38 @@
 function longestCommonSubsequence(astr,bstr){
     astr=astr.split('')
     bstr=bstr.split('')
-    let dp=new Array(astr.length),maxLen=0;
-    for(let i=0;i<astr.length;i++){
-        dp[i]=[]
-        for(let j=0;j<bstr.length;j++){
-            if(i==0||j==0) {
-                dp[i][j]=astr[i]===bstr[j]?1:0
-                continue;
-            }
-            // dp[i][j]=astr[i]===bstr[j]?1:0
+    let dp=new Array(astr.length+1),maxLen=0;
+    dp[0]=new Array(bstr.length+1).fill(0)
+    for(let i=1;i<=astr.length;i++){
+        dp[i]=new Array(bstr.length+1).fill(0)
+        for(let j=1;j<=bstr.length;j++){
+            if(astr[i-1]===bstr[j-1]){
+                dp[i][j]=(dp[i-1][j-1]+1)
+                console.log(dp[i][j],astr[i],bstr[j],33)
 
-            dp[i][j]=astr[i]===bstr[j]?(dp[i-1][j-1]+1):Math.max(dp[i-1][j],dp[i][j-1])
+            }
+            else{
+                dp[i][j]=Math.max(dp[i-1][j-1],dp[i-1][j],dp[i][j-1])
+                console.log(dp[i][j],38)
+
+            }
             if(dp[i][j]>maxLen){
                 maxLen=dp[i][j]
             }
         }
+        console.log(dp[i],40)
     }
-    // console.log(dp,40)
+    
     return maxLen
 
 }
-// console.log(longestCommonSubsequence("mhunuzqrkzsnidwbun","szulspmhwpazoxijwbq"),43)
+// console.log(longestCommonSubsequence("abc","def"),43)
+//        a  c  e
+// a    [ 1, 0, 0 ] 40
+// b    [ 0, 1, 0 ] 40
+// c    [ 0, 1, 1 ] 40
+// d    [ 0, 1, 1 ] 40
+// e    [ 0, 1, 2 ] 40
 //  2.(5)给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。
 
 //  示例 1：
@@ -71,9 +82,11 @@ function longestCommonSubsequence(astr,bstr){
             if(i>0&&j>0&&dp[i][j]===1){
                 dp[i][j]=dp[i-1][j-1]+1;
                 console.log('isDp','i',i,'j',j,'str.length-(i+1):',str.length-(i+1),'(j+1)+dp[i][j]:',(j+1)+dp[i][j])
-                if(str.length-(i+1)+dp[i][j]===(j+1)){
+                if(str.length-(i+1)-dp[i][j]===(j+1)){  
                     console.log('isDp',true,53,dp[i][j])
-                    maxStr=maxLen>dp[i][j]?maxStr:str.substring(i-dp[i][j]+1,i+1)
+                    maxStr=maxLen>dp[i][j]?maxStr:str.substring(i+1,i+dp[i][j]+1)
+
+                    // maxStr=maxLen>dp[i][j]?maxStr:str.substring(i-dp[i][j]+1,i+1)
                     maxLen=Math.max(maxLen,dp[i][j]);
 
                 }
@@ -87,7 +100,7 @@ function longestCommonSubsequence(astr,bstr){
     //     console.log(dp[i])
     // }
     // console.log('maxLen',maxLen)
-    // console.log(maxStr,71)
+    console.log(maxStr,71)
     return maxStr
 //  let db_index=dp.findIndex(o=>{
 //      let max_index=o.findIndex(b=>b===maxLen)
@@ -167,7 +180,7 @@ function longestCommonSubsequence(astr,bstr){
     return res;
 }
 
-//  console.log(longestPalindrome('helewelw'))
+//  console.log(longestPalindrome("babad"))
 
 //  longestPalindrome('helewelw')
 
@@ -195,38 +208,45 @@ function longestCommonSubsequence(astr,bstr){
 //  输出: 6
 //  解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
  function maxSubArray(nums){
-    let dp=new Array(nums.length),maxSum=0;
+    let dp=new Array(nums.length),maxSum=-90000;
     let f_index=nums.filter(o=>{
         return o>=0
     });
     if(f_index<0){
         return Math.max(...nums)
     }
-    for(let i=0;i<dp.length;i++){
-        dp[i]=[]
+    if(nums.length===1){
+        return nums[0]
+    }
+
+    for(let i=0;i<nums.length;i++){
+        dp[i]=new Array(nums.length).fill(0)
+        dp[i][i]=nums[i]
+        maxSum=Math.max(maxSum,dp[i][i])
+
         // dp[i]=new Array(dp.length).fill(-9999)
-        for(let j=0;j<=i;j++){
-            if(i===j) {
-                // dp[i][j]=-9999
-                dp[i][j]=0;
-                continue;
-            }else if(i==0||j==0){
-                dp[i][j]=nums[i]+nums[j]
-            }else{
+        for(let j=i+1;j<nums.length;j++){
+            //  if(i==0||j==0){
+            //     dp[i][j]=nums[i]+nums[j]
+            // }else{
                 dp[i][j]=nums[j]+dp[i][j-1]
-            }
+            // }
             maxSum=Math.max(maxSum,dp[i][j])
 
         }
     }
     console.log(dp,220)
+    if(maxSum<=0){
+        return Math.max(...nums)
+
+    }
     return maxSum
  }
- console.log(maxSubArray([-2,1,-3,4,-1,2,1,-5,4]),223)
-//     -2 1 -3 4 -1
-// -2  -& -1
-// 1   -1    -3
-// -3
+ console.log(maxSubArray([3,-2,-1]),223)
+//     1 -1 1
+// 1  -&  0 1
+// -1      0
+// 1
 // 4
 // -1  
 // 4.给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 '.' 和 '*' 的正则表达式匹配。

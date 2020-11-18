@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>safe test</title>
+    </head>
+    <body>
+        this is script executed;
+        <input type="test"/>
+        <script>
+            document.addEventListener('DOMContentLoaded',()=>{
+                console.log('document loaded',11)
+            })
+            for(let i=0;i<9999;i++){
+                console.log('i',i)
+            }
+            // setTimeout(()=>{
+            //     console.log('this is script executed')
+            // })
+        </script>
+
+    </body>
+</html>

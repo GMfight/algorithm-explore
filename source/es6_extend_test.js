@@ -1,0 +1,3 @@
+class funcA {
+  label: "funcA";
+}

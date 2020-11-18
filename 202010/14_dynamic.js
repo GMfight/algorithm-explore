@@ -1,25 +1,8 @@
-// 动态规划
-// 1.(1025)给定两个字符串 text1 和 text2，返回这两个字符串的最长公共子序列的长度。
-
-// 一个字符串的 子序列 是指这样一个新的字符串：它是由原字符串在不改变字符的相对顺序的情况下删除某些字符（也可以不删除任何字符）后组成的新字符串。
-// 例如，"ace" 是 "abcde" 的子序列，但 "aec" 不是 "abcde" 的子序列。两个字符串的「公共子序列」是这两个字符串所共同拥有的子序列。
-
-// 若这两个字符串没有公共子序列，则返回 0。
-// 示例 1:
-
-// 输入：text1 = "abcde", text2 = "ace" 
-// 输出：3  
-// 解释：最长公共子序列是 "ace"，它的长度为 3。
-// 示例 2:
-
-// 输入：text1 = "abc", text2 = "abc"
-// 输出：3
-// 解释：最长公共子序列是 "abc"，它的长度为 3。
-// 示例 3:
-
-// 输入：text1 = "abc", text2 = "def"
-// 输出：0
-// 解释：两个字符串没有公共子序列，返回 0
+// 动态规划之，最大/最小/最长/最短 子序列问题
+// 重点：动态规划转移方程
+// 1.(1025)
+// 方程式：
+// dp[i][j]=a[i]===b[j]&&dp[i-1][j-1]
 function longestCommonSubsequence(astr,bstr){
     astr=astr.split('')
     bstr=bstr.split('')
@@ -56,13 +39,13 @@ function longestCommonSubsequence(astr,bstr){
 // d    [ 0, 1, 1 ] 40
 // e    [ 0, 1, 2 ] 40
 //  2.(5)给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。
-
-//  示例 1：
- 
-//  输入: "babad"
-//  输出: "bab"
-//  注意: "aba" 也是一个有效答案。
+// 方程式：
+// 1）dp[i][j]=a[i]===a[j]&&dp[i+1][j-1] 参见：longestPalindrome3
+// 2）参考连续子数组最大和问题
+// 3）中心扩展法:每个值作为中心对称点，左右延伸求最长回文子串。参见：longestPalindrome4
+// 奇数情况 偶数情况
 // 动态规划参考了方法1
+
  function longestPalindrome(str){
      if(!str) return null;
      if(str.length===1) return str;
@@ -179,8 +162,58 @@ function longestCommonSubsequence(astr,bstr){
     // console.log(dp,140)
     return res;
 }
+function longestPalindrome3(str){
+    str=str.split('')
+    let dp=new Array(str.length),maxStr=[str[0]]
+    // console.log(maxStr,164)
+    for(let i=str.length-1;i>=0;i--){
+        dp[i]=[]
+        for(let j=i;j<str.length;j++){
+            if(j===i){
+                dp[i][j]=true
+            }else if(j-i<=1){
+                dp[i][j]=str[i]===str[j]
+            }else{
+                dp[i][j]=str[i]===str[j]&&dp[i+1][j-1]
+            }
+            if(dp[i][j]){
 
-//  console.log(longestPalindrome("babad"))
+                maxStr=maxStr.length>(j-i+1)?maxStr:str.slice(i,j+1)
+                // console.log('maxStr',maxStr,176)
+            }
+        }
+    }
+    // console.log(dp,177)
+    return maxStr.join('');
+}
+
+function longestPalindrome4(str){
+    // str=str.split('');
+    let maxStr=str.substring(0,1);
+    let compare=function(left,right){
+        // let len=0;
+        while(left>=0&&right<str.length){
+            if(str[left]===str[right]){
+                maxStr=maxStr.length<(right+1-left)?str.substring(left,right+1):maxStr
+                left--;
+                right++;
+            }else{
+                break;
+            }
+    
+        }
+        return maxStr;
+    }
+    for(let i=0;i<str.length;i++){
+        // 两种情况
+        compare(i,i); //a bab
+        compare(i,i+1) //aa  baab
+    }
+    return maxStr;
+}
+
+// console.log(longestPalindrome3('abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababa'))
+ console.log(longestPalindrome4("bbbb"))
 
 //  longestPalindrome('helewelw')
 
@@ -200,13 +233,11 @@ function longestCommonSubsequence(astr,bstr){
 // e     1   1   1
 // h   1
 
-//  3.(53)给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
-
-//  示例:
- 
-//  输入: [-2,1,-3,4,-1,2,1,-5,4]
-//  输出: 6
-//  解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
+//  3.(53)https://leetcode-cn.com/problems/maximum-subarray/
+// 知识点：
+// 1）动态规划：dp[i,j]=nums数组中i到j位置的连续和，用maxSum存储位置（方法时间和空间复杂度超标）；
+// 2）计算机中数字的表示：最大和最小 [-2147483647]
+// 3）方法二：dp[i]=Max(dp[i-1],nums[i])表示数组i位置以前的连续最大和 
  function maxSubArray(nums){
     let dp=new Array(nums.length),maxSum=-90000;
     let f_index=nums.filter(o=>{
@@ -242,13 +273,56 @@ function longestCommonSubsequence(astr,bstr){
     }
     return maxSum
  }
- console.log(maxSubArray([3,-2,-1]),223)
+
+
+function maxSubArray1(nums){
+    let dp=new Array(nums.length),maxSum=Math.max(...nums)
+    for(let i=0;i<nums.length;i++){
+        dp[i]=new Array(nums.length+1).fill(0);
+        dp[i][i]=nums[i]
+        maxSum=Math.max(maxSum,dp[i][i])
+        if(i===nums.length-1){
+            dp[i].fill(nums[i]);
+            maxSum=Math.max(maxSum,nums[i])
+            continue;
+        }
+
+        for(let j=i+1;j<nums.length;j++){
+
+            dp[i][j]=dp[i][j-1]+nums[j];
+            maxSum=Math.max(maxSum,dp[i][j])
+            // console.log('i',i,'j',j,'maxSum',maxSum)
+        }
+
+    }
+    console.log(dp)
+    return maxSum;
+}
+
+function maxSubArray3(nums){
+    let dp=[],maxSum=Math.max(...nums)
+    for(let i=0;i<nums.length;i++){
+        if(i===0){
+
+            dp[i]=nums[i]
+        }else{
+            dp[i]=dp[i-1]>=0?(dp[i-1]+nums[i]):nums[i]
+        } 
+        maxSum=Math.max(dp[i],maxSum)
+    }
+    return maxSum;
+}
+//  console.log(maxSubArray3([-1,1,2,1]),223)
+//  console.log(maxSubArray1([-1,1,2,1]),223)
+
 //     1 -1 1
 // 1  -&  0 1
 // -1      0
 // 1
 // 4
 // -1  
+// function maxLine()
+// dp[i][j]=Max(dp[i-1][j-index])
 // 4.给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 '.' 和 '*' 的正则表达式匹配。
 
 // '.' 匹配任意单个字符

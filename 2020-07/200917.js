@@ -148,7 +148,7 @@ function sortList(head) {
   }
   console.log(allnode.next);
 }
-console.log(sortList(testData4));
+// console.log(sortList(testData4));
 
 // 7.（922）按照奇偶数排序
 // 给定一个非负整数数组 A， A 中一半整数是奇数，一半整数是偶数。
@@ -158,14 +158,34 @@ console.log(sortList(testData4));
 // 输出：[4,5,2,7]
 // 解释：[4,7,2,5]，[2,5,4,7]，[2,7,4,5] 也会被接受。
 // 你可以返回任何满足上述条件的数组作为答案。
-function sortArrayByParityII(arr) {}
+function sortArrayByParityII(arr) {
+  for(let i=0;i<arr.length;i++){
+    if((i+1)%2===arr[i]%2) continue;
+    let rIndex=arr.slice(i,arr.length).findIndex(o=>o%2===(i+1)%2)
+    let tmp=arr[i+rIndex];
+    arr[i+rIndex]=arr[i];
+    arr[i]=tmp;
+  }
+  return arr;
+}
+// console.log(sortArrayByParityII([4,5,2,7]),171)
 
 // 8.(976)三角形最大周长
 // 给定由一些正数（代表长度）组成的数组 A，返回由其中三个长度组成的、面积不为零的三角形的最大周长。
 // 如果不能形成任何面积不为零的三角形，返回 0。
 // 输入：[2,1,2]
 // 输出：5
-function largestPerimeter() {}
+// 三角形：任意两边边长大于第三边
+// 参考：三个最大和==target
+function largestPerimeter(arr) {
+  arr.sort((a,b)=>b-a);
+  // console.log(arr,182)
+  for(let i=2;i<arr.length;i++){
+    if(arr[i]+arr[i-1]>arr[i-2]) return arr[i]+arr[i-1]+arr[i-2]
+  }
+  return 0;
+}
+// console.log(largestPerimeter([1,2,1]))
 // 9.(1356)给你一个整数数组 arr 。请你将数组中的元素按照其二进制表示中数字 1 的数目升序排序。
 // 如果存在多个数字二进制中 1 的数目相同，则必须将它们按照数值大小升序排列。
 // 请你返回排序后的数组。
@@ -176,7 +196,9 @@ function largestPerimeter() {}
 // [3,5,6] 有 2 个 1 。
 // [7] 有 3 个 1 。
 // 按照 1 的个数排序得到的结果数组为 [0,1,2,4,8,3,5,6,7]
-function sortByBits(arr) {}
+function sortByBits(arr) {
+
+}
 
 // 10.(1366)
 // 现在有一个特殊的排名系统，依据参赛团队在投票人心中的次序进行排名，每个投票者都需要按从高到低的顺序对参与排名的所有团队进行排位。
@@ -194,7 +216,38 @@ function sortByBits(arr) {}
 // B 队获得两票「排位第二」，三票「排位第三」。
 // C 队获得三票「排位第二」，两票「排位第三」。
 // 由于 C 队「排位第二」的票数较多，所以 C 队排第二，B 队排第三。
-function rankTeams(votes) {}
+function rankTeams(votes) {
+  let teams=votes[0].split(''),count=[];
+  for(let i=0;i<teams.length;i++){
+    count[teams[i]]=[]
+  }
+  for(let i=0;i<votes.length;i++){
+    let voteArr=votes[i].split('')
+    // console.log(votes[i],220)
+    for(let j=0;j<voteArr.length;j++){
+      count[voteArr[j]]=count[voteArr[j]]&&count[voteArr[j]].length>0?count[voteArr[j]]:new Array(voteArr.length).fill(0)
+      count[voteArr[j]][j]=count[voteArr[j]][j]>0?count[voteArr[j]][j]+1:1
+    }
+  }
+  // console.log(count,225)
+  // 对象数组排序方法
+  count=Object.keys(count).sort((b,a)=>{
+    let aGrade=count[a]
+    let bGrade=count[b]
+    for(let j=0;j<aGrade.length;j++){
+     if(aGrade[j]!=bGrade[j]) return aGrade[j]-bGrade[j];
+    }
+    if(a<b){
+      return 1
+    }else{
+      return -1
+    }
+  })
+  return count.join('')
+}
+
+// console.log(rankTeams(["BCA","CAB","CBA","ABC","ACB","BAC"]))
+// console.log(rankTeams(["FVSHJIEMNGYPTQOURLWCZKAX","AITFQORCEHPVJMXGKSLNZWUY","OTERVXFZUMHNIYSCQAWGPKJL","VMSERIJYLZNWCPQTOKFUHAXG","VNHOZWKQCEFYPSGLAMXJIUTR","ANPHQIJMXCWOSKTYGULFVERZ","RFYUXJEWCKQOMGATHZVILNSP","SCPYUMQJTVEXKRNLIOWGHAFZ","VIKTSJCEYQGLOMPZWAHFXURN","SVJICLXKHQZTFWNPYRGMEUAO","JRCTHYKIGSXPOZLUQAVNEWFM","NGMSWJITREHFZVQCUKXYAPOL","WUXJOQKGNSYLHEZAFIPMRCVT","PKYQIOLXFCRGHZNAMJVUTWES","FERSGNMJVZXWAYLIKCPUQHTO","HPLRIUQMTSGYJVAXWNOCZEKF","JUVWPTEGCOFYSKXNRMHQALIZ","MWPIAZCNSLEYRTHFKQXUOVGJ","EZXLUNFVCMORSIWKTYHJAQPG","HRQNLTKJFIEGMCSXAZPYOVUW","LOHXVYGWRIJMCPSQENUAKTZF","XKUTWPRGHOAQFLVYMJSNEIZC","WTCRQMVKPHOSLGAXZUEFYNJI"]),237);
 
 // 11.(1502)判断能否形成等差数列
 // 给你一个数字数组 arr 。
@@ -203,7 +256,16 @@ function rankTeams(votes) {}
 // 输入：arr = [3,5,1]
 // 输出：true
 // 解释：对数组重新排序得到 [1,3,5] 或者 [5,3,1] ，任意相邻两项的差分别为 2 或 -2 ，可以形成等差数列。
-function canMakeArithmeticProgression(arr) {}
+function canMakeArithmeticProgression(arr) {
+  arr.sort((a,b)=>a-b)
+  let SP=9999
+  for(let i=1;i<arr.length;i++){
+    SP=SP===9999?arr[i]-arr[i-1]:SP
+    if(arr[i]-arr[i-1]!==SP) return false;
+  }
+  return true;
+}
+// console.log(canMakeArithmeticProgression([3,5,1]),268);
 
 // 12.（1528）重新排列字符串
 // 给你一个字符串 s 和一个 长度相同 的整数数组 indices 。
@@ -212,24 +274,70 @@ function canMakeArithmeticProgression(arr) {}
 // 输入：s = "codeleet", indices = [4,5,6,7,0,2,1,3]
 // 输出："leetcode"
 // 解释：如图所示，"codeleet" 重新排列后变为 "leetcode" 。
-function restoreString(s, indices) {}
+function restoreString(s, indices) {
+  let newArr=new Array(s.length);
+  for(let i=0;i<indices.length;i++){
+    newArr[indices[i]]=s[i]
+  }
+  return newArr.join('')
+}
+// console.log(restoreString('codeleet',[4,5,6,7,0,2,1,3]))
 // 2.搜索相关算法整理
 // 13.(27)给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。
 
 // 不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并 原地 修改输入数组。
 
 // 元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
-function removeElement(nums, val) {}
+function removeElement(nums, val) {
+  let i=0;
+  for(;i<nums.length;i++){
+    if(nums[i]===val) {
+      nums.splice(i,1);
+      i--
+    }
+  }
+  return i;
+}
 
 // 14.(28)给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。
 // 输入: haystack = "hello", needle = "ll"
 // 输出: 2
-function strStr(haystack, needle) {}
+function strStr(ps, cs) {
+  if(!cs) return 0;
+
+  for(let m=0;m<ps.length;m++){
+    let j=0;
+
+    for(let i=m;i<ps.length;i++){
+      console.log('i',i,ps[i],'j',j,cs[j])
+      if(ps.length-i<cs.length-j){
+        break;
+      } 
+      if(ps[i]!==cs[j]){
+        j=0
+        break;
+      }
+      // console.log('equal',i,j,cs.length)
+      if(j===cs.length-1){
+        return i-cs.length+1;
+      }
+      ++j
+    }
+  }
+
+  // console.log('i',i,'j',j,318)
+  return -1;
+}
+// console.log(strStr("aabaabbbaabbbbabaaab","abaa"))
 
 // 15.(88)给你两个有序整数数组 nums1 和 nums2，请你将 nums2 合并到 nums1 中，使 nums1 成为一个有序数组。
 // 初始化 nums1 和 nums2 的元素数量分别为 m 和 n 。
 // 你可以假设 nums1 有足够的空间（空间大小大于或等于 m + n）来保存 nums2 中的元素。
-function merge(nums1, m, nums2, n) {}
+// 说明：系统内存校验，涉及到数组插入（暂时放弃）
+function merge(nums1, m, nums2, n) {
+  
+}
+// console.log(merge([1,2,3,0],3,[2,5,6],3))
 
 // 16.(125)给定一个字符串，验证它是否是回文串，只考虑字母和数字字符，可以忽略字母的大小写。
 function isPalindrome(s) {}

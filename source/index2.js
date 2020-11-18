@@ -1,0 +1,5 @@
+let module_test=require('./module_test.js')
+console.log(module_test.num)
+module_test.addAndPrintNum()
+console.log(module_test.num)
+// module_test.addAndPrintNum()

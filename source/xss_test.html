@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>xss test</title>
+</head>
+
+<body>
+  <div class="info1">this is print info1
+    <div id="app"></div>
+  </div>
+  <script>
+    let txt = location.search;
+    txt =decodeURIComponent(txt.substring(1, txt.length));
+    document.getElementById('app')=txt
+    console.log(txt, 13)
+    // eval(txt)
+  </script>
+</body>
+
+</html>

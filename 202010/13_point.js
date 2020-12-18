@@ -98,3 +98,7 @@ function longestCommonSubsequence(text1, text2) {
     // d                        1
     // i   1
     // s      1
+// 两数组交集（数组内有重复元素）
+function intersection(arr,brr){
+    
+}

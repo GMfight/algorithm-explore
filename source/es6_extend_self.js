@@ -52,3 +52,38 @@
 // function _createClass(){
 
 // }
+// extend特色
+// 1.子类proto指向父类
+// 2.子类prototype.proto指向父类prototype
+// 3.静态方法
+// 4.私有方法
+function myExtends(Super,Sub){
+    // let prototype=new Super()
+    let prototype=Object.create(Super.prototype);
+    prototype.constructor=Sub;
+    Object.setPrototypeOf(prototype,Super.prototype)
+    Sub.prototype=prototype;
+    Object.setPrototypeOf(Sub,Super);
+}
+
+function Super1(label){
+    this.label=label
+}
+Super1.prototype.print1=function(){
+    console.log(this.label,'super1')
+}
+function Sub1(age,label){
+    Super1.bind(this)(label);
+    this.age=age;
+}
+myExtends(Super1,Sub1)
+Sub1.prototype.print1=function(){
+    console.log(this.label,'sub1')
+}
+// let superObj=new Super1('superobj1');
+// superObj.print1();
+// let subobj1=new Super1('subobj1');
+// subobj1.print1();
+
+// console.log(Sub1.__proto__===Super1,'77')
+// console.log(Sub1.prototype.__proto__===Super1.prototype,'78')

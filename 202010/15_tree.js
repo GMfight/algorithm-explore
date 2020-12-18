@@ -28,7 +28,8 @@ function flatten(root){
 }
 
 /* 2.按照先序遍历展开
- */function flatten2(root){
+ */
+function flatten2(root){
     let head;
     if(root){
         head={

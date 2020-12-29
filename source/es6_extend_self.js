@@ -52,6 +52,10 @@
 // function _createClass(){
 
 // }
+// 知识点：(es5)
+// prototype指向构造函数的公共属性和方法
+// proto指向构造函数的proto
+// Object和函数的__proto__顶端是null
 // extend特色
 // 1.子类proto指向父类
 // 2.子类prototype.proto指向父类prototype
@@ -65,6 +69,10 @@ function myExtends(Super,Sub){
     Sub.prototype=prototype;
     Object.setPrototypeOf(Sub,Super);
 }
+console.log(myExtends.__proto__)
+console.log(Object.__proto__)
+console.log(Object.prototype)
+
 
 function Super1(label){
     this.label=label

@@ -1,5 +1,8 @@
-let str='<div class="div1 btn"><p class="ptxt">this is p test</p>div test</div>';
+// html字符串解析为dom节点
+// 参考：https://chentaoqian.com/?p=208
+let str='<div class="div1 btn">divstart<img src="123"/>pstart<p class="ptxt">pend</p>divend</div>';
 // let str='<div class="div1 btn">div test</div>';
+// let str='<div class="div1 btn"><img src="123"/></div>';
 
 // let str='<xml><div></div></xml>';
 
@@ -10,10 +13,7 @@ let str='<div class="div1 btn"><p class="ptxt">this is p test</p>div test</div>'
 // 4）结束标签
 function parseHtml(str){
     let queue=collectNode(str)
-    console.log('queue',queue)
-    // console.log
     parseNode(queue);
-
     console.log(JSON.stringify(rootNode))
 }
 
@@ -38,10 +38,22 @@ function collectNode(str){
             }
             // tag刚刚开始
             sTagOpen=true;
+            if(curStr){
+                res.push({type:'text',val:curStr})
+            }
+            curStr=''
             i++;
             continue;
         }
         if(str[i]==='>'){
+            if(str[i-1]==='/'){
+                i++;
+                sTagOpen=false;
+                res.push({type:'attr',val:curStr.substring(0,curStr.length-1)})
+                curStr='';
+                res.push({type:'selfClose'})
+                continue;
+            }
             if(sTagOpen){
                 // 添加头标签
                 sTagOpen=false;
@@ -91,19 +103,12 @@ let queue=[],curNode=null,rootNode;
 
 function insertNode({type,val}){
     let newNode=null;
-    // console.log('type',type,'val',val)
     if(type==='tag'){
         newNode={
             type:type,
             val:val,
             children:[]
         }
-        if(!rootNode){
-            rootNode=curNode=newNode;
-        }else if(curNode.children){
-            curNode.children.push(newNode)
-        }
-        return newNode
     }
     if(type==='text'){
         newNode={
@@ -111,33 +116,40 @@ function insertNode({type,val}){
             tag:'txt',
             val:val
         }
-        if(curNode.children){
-            curNode.children.push(newNode)
-        }else{
-            curNode.children=[newNode]
-        }
-        // curNode.children=[...curNode.children,newNode]
-        // return newNode;
     }
     if(type==='attr'){
-        // console.log('attr node',123)
         newNode={
             type:'attr',
             val
         }
+    }
+    if(type==='attr'){
         if(curNode.attrs){
             curNode.attrs.push(newNode)
         }else{
             curNode.attrs=[newNode]
         }
-
+    }else{
+        if(!rootNode){
+            rootNode=curNode=newNode;
+        }else if(!curNode){
+            curNode=newNode;
+        }else if(curNode.children){
+            curNode.children.push(newNode)
+        }
     }
+    return newNode;
 }
 
 function parseNode(arr){
     while(arr.length>0){
-        // console.log('len',arr.length,'curNode',curNode)
+        // console.log('queue',queue,'curNode',curNode)
         let node=arr.shift();
+        if(node.type==='selfClose'){
+            queue.pop();
+            curNode=queue.pop();
+            continue;
+        }
         if(node.type==='tag'){
             // 增加节点
             curNode=insertNode(node)

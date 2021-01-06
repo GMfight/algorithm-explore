@@ -3,7 +3,7 @@ function myChain(){
     let func=args[0];
     let pList=args.slice(1)
     let fIndex=pList.length-1;
-    let dp=function(){
+    let dp=function(param){
         if(fIndex>=0){
             let curP=pList[fIndex];
             curP()
@@ -14,7 +14,7 @@ function myChain(){
         }
         return  [...pList]
     }
-    return dp();
+    return dp;
 }
 function printLog(param){
     console.log('param',param)

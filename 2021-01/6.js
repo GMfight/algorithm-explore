@@ -186,7 +186,9 @@ function numToStr(num){
     let list=dp(0,nums.length-1)
     return (list&&list.length)||0;
 }
-console.log(numToStr(12258))
+// console.log(numToStr(12258))
+
+
 // 树结构转数组参考：
 // 1）32-1，36，
 
